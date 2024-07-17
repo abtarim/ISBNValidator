@@ -18,59 +18,117 @@ class ValidateISBNTest {
     }
 
     @Test
-    @DisplayName("Check Valid ISBN")
+    @DisplayName("Check Valid Ten Digit ISBN")
     @Order(1)
-    void checkValidISBN() {
+    void checkValidTenDigitISBN() {
         // setup
-        String numberOfISBN = "0306406152";
+        String numberISBN = "0306406152";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberOfISBN);
+        boolean actual = validateISBN.checkISBN(numberISBN);
 
         // assert
         assertTrue(actual, "The result is should be true");
     }
 
     @Test
-    @DisplayName("Check Invalid ISBN")
+    @DisplayName("Check Invalid Ten Digit ISBN")
     @Order(2)
-    void checkAnInvalidISBN() {
+    void checkAnInvalidTenDigitISBN() {
         // setup
-        String numberOfISBN = "0306406153";
+        String numberISBN = "0306406153";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberOfISBN);
+        boolean actual = validateISBN.checkISBN(numberISBN);
 
         // assert
         assertFalse(actual, "The result is should be false");
     }
 
     @Test
-    @DisplayName("Check Invalid Digit Length Not Allowed")
+    @DisplayName("Check Valid Thirteen Digit ISBN")
     @Order(3)
-    void checkInvalidDigitLengthNotAllowed() {
+    void checkValidThirteenDigitISBN() {
+        // setup
+        String numberISBN = "9780306406157";
+
+        // execute
+        boolean actual = validateISBN.checkISBN(numberISBN);
+
+        // assert
+        assertTrue(actual, "The result is should be true");
+    }
+
+    @Test
+    @DisplayName("Check Invalid Thirteen Digit ISBN")
+    @Order(3)
+    void checkInvalidThirteenDigitISBN() {
+        // setup
+        String numberISBN = "9780306406156";
+
+        // execute
+        boolean actual = validateISBN.checkISBN(numberISBN);
+
+        // assert
+        assertFalse(actual, "The result is should be false");
+    }
+
+    @Test
+    @DisplayName("Check Invalid Ten Digit Length Not Allowed")
+    @Order(3)
+    void checkInvalidTenDigitLengthNotAllowed() {
         // setup
         String numberOfISBN = "030640615";
         Class<NumberFormatException> expectedException = NumberFormatException.class;
 
         // execute
-        Executable actualException = () ->  validateISBN.checkISBN(numberOfISBN);
+        Executable actualException = () -> validateISBN.checkISBN(numberOfISBN);
+
+        // assert
+        assertThrows(expectedException, actualException);
+    }
+
+
+    @Test
+    @DisplayName("Check Invalid Thirteen Digit Length Not Allowed")
+    @Order(3)
+    void checkInvalidThirteenDigitLengthNotAllowed() {
+        // setup
+        String numberOfISBN = "978030640615";
+        Class<NumberFormatException> expectedException = NumberFormatException.class;
+
+        // execute
+        Executable actualException = () -> validateISBN.checkISBN(numberOfISBN);
 
         // assert
         assertThrows(expectedException, actualException);
     }
 
     @Test
-    @DisplayName("Non Numeric ISBN Not Allowed")
+    @DisplayName("Non Numeric Ten Digit ISBN Not Allowed")
     @Order(4)
-    void checkNonNumericISBNNotAllowed() {
+    void checkNonNumericTenDigitISBNNotAllowed() {
         // setup
         String numberOfISBN = "030640615B";
-
         Class<NumberFormatException> expectedException = NumberFormatException.class;
 
         // execute
-        Executable actualException = () ->  validateISBN.checkISBN(numberOfISBN);
+        Executable actualException = () -> validateISBN.checkISBN(numberOfISBN);
+
+        // assert
+        assertThrows(expectedException, actualException);
+    }
+
+    @Test
+    @DisplayName("Non Numeric Thirteen Digit ISBN Not Allowed")
+    @Order(4)
+    void checkNonNumericThirteenDigitISBNNotAllowed() {
+        // setup
+        String numberOfISBN = "978030640615B";
+        Class<NumberFormatException> expectedException = NumberFormatException.class;
+
+        // execute
+        Executable actualException = () -> validateISBN.checkISBN(numberOfISBN);
 
         // assert
         assertThrows(expectedException, actualException);
@@ -82,6 +140,7 @@ class ValidateISBNTest {
     void checkValidISBNEndingX() {
         // setup
         String numberOfISBN = "012000030X";
+
         // execute
         boolean actual = validateISBN.checkISBN(numberOfISBN);
 
