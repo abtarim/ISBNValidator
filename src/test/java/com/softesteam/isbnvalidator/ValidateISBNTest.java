@@ -75,4 +75,17 @@ class ValidateISBNTest {
         // assert
         assertThrows(expectedException, actualException);
     }
+
+    @Test
+    @DisplayName("Check Valid ISBN Ending X")
+    @Order(4)
+    void checkValidISBNEndingX() {
+        // setup
+        String numberOfISBN = "012000030X";
+        // execute
+        boolean actual = validateISBN.checkISBN(numberOfISBN);
+
+        // assert
+        assertTrue(actual, "The result is should be true");
+    }
 }
