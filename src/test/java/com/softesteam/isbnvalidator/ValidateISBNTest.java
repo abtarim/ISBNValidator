@@ -1,10 +1,10 @@
 package com.softesteam.isbnvalidator;
 
+import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
-
 import org.junit.jupiter.api.function.Executable;
-
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -22,10 +22,10 @@ class ValidateISBNTest {
     @Order(1)
     void checkValidTenDigitISBN() {
         // setup
-        String numberISBN = "0306406152";
+        String isbn = "0306406152";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberISBN);
+        boolean actual = validateISBN.checkISBN(isbn);
 
         // assert
         assertTrue(actual, "The result is should be true");
@@ -36,10 +36,10 @@ class ValidateISBNTest {
     @Order(2)
     void checkAnInvalidTenDigitISBN() {
         // setup
-        String numberISBN = "0306406153";
+        String isbn = "0306406153";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberISBN);
+        boolean actual = validateISBN.checkISBN(isbn);
 
         // assert
         assertFalse(actual, "The result is should be false");
@@ -50,10 +50,10 @@ class ValidateISBNTest {
     @Order(3)
     void checkValidThirteenDigitISBN() {
         // setup
-        String numberISBN = "9780306406157";
+        String isbn = "9780306406157";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberISBN);
+        boolean actual = validateISBN.checkISBN(isbn);
 
         // assert
         assertTrue(actual, "The result is should be true");
@@ -61,13 +61,13 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Check Invalid Thirteen Digit ISBN")
-    @Order(3)
+    @Order(4)
     void checkInvalidThirteenDigitISBN() {
         // setup
-        String numberISBN = "9780306406156";
+        String isbn = "9780306406156";
 
         // execute
-        boolean actual = validateISBN.checkISBN(numberISBN);
+        boolean actual = validateISBN.checkISBN(isbn);
 
         // assert
         assertFalse(actual, "The result is should be false");
@@ -75,7 +75,7 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Check Invalid Ten Digit Length Not Allowed")
-    @Order(3)
+    @Order(5)
     void checkInvalidTenDigitLengthNotAllowed() {
         // setup
         String numberOfISBN = "030640615";
@@ -91,7 +91,7 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Check Invalid Thirteen Digit Length Not Allowed")
-    @Order(3)
+    @Order(6)
     void checkInvalidThirteenDigitLengthNotAllowed() {
         // setup
         String numberOfISBN = "978030640615";
@@ -106,7 +106,7 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Non Numeric Ten Digit ISBN Not Allowed")
-    @Order(4)
+    @Order(7)
     void checkNonNumericTenDigitISBNNotAllowed() {
         // setup
         String numberOfISBN = "030640615B";
@@ -121,7 +121,7 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Non Numeric Thirteen Digit ISBN Not Allowed")
-    @Order(4)
+    @Order(8)
     void checkNonNumericThirteenDigitISBNNotAllowed() {
         // setup
         String numberOfISBN = "978030640615B";
@@ -136,7 +136,7 @@ class ValidateISBNTest {
 
     @Test
     @DisplayName("Check Valid ISBN Ending X")
-    @Order(4)
+    @Order(9)
     void checkValidISBNEndingX() {
         // setup
         String numberOfISBN = "012000030X";
@@ -147,4 +147,18 @@ class ValidateISBNTest {
         // assert
         assertTrue(actual, "The result is should be true");
     }
+
+//    @Test
+//    @DisplayName("Check Email String")
+//    @Order(10)
+//    void checkEmailString() {
+//        // setup
+//        String email = "ab_tarim@gmail.com";
+//
+//        // execute
+//
+//
+//        // assert
+//        assertThat(email, StringContains.containsString("@"));
+//    }
 }
