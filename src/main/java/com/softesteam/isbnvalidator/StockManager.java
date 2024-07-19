@@ -16,8 +16,8 @@ public class StockManager {
         if (book == null)
             book = webService.lookupISBN(isbn);
         StringBuilder locator = new StringBuilder();
-        locator.append(isbn.substring(isbn.length()-4));
-        locator.append(book.getAuthor().substring(0,1).toUpperCase());
+        locator.append(isbn.substring(isbn.length() - 4));
+        locator.append(book.getAuthor().substring(0, 1).toUpperCase());
         locator.append(book.getTitle().split(" ").length);
         return locator.toString();
     }

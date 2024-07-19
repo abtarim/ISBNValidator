@@ -5,28 +5,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class StockManagementTest {
-    static StockManager stockManager;
+    private ExternalISBNDataService testDatabaseService;
+    private ExternalISBNDataService testWebService;
+    private StockManager stockManager;
+    private Book testBook;
 
-    @BeforeAll
-    static void setUpBeforeAll() throws Exception {
+    @BeforeEach
+    void setUp() {
+        testDatabaseService = mock(ExternalISBNDataService.class);
+        testWebService = mock(ExternalISBNDataService.class);
         stockManager = new StockManager();
-    }
-
-    @Disabled
-    @Test
-    @DisplayName("Test Template")
-    @Order(0)
-    void testTemplate() {
-        // setup
-
-        // execute
-
-        // assert
+        stockManager.setDataService(testDatabaseService);
+        stockManager.setWebService(testWebService);
     }
 
     @Test
@@ -34,24 +30,12 @@ public class StockManagementTest {
     @Order(1)
     void testCanGetCorrectLocatorCode() {
         // setup
-        ExternalISBNDataService testDatabaseService = new ExternalISBNDataService() {
-            @Override
-            public Book lookupISBN(String isbn) {
-                return null;
-            }
-        };
-
-        ExternalISBNDataService testWebService = new ExternalISBNDataService() {
-            @Override
-            public Book lookupISBN(String isbn) {
-                return new Book(isbn, "Of Mice And Men", "J. Steinbeck");
-            }
-        };
-
-        stockManager.setDataService(testDatabaseService);
-        stockManager.setWebService(testWebService);
         String isbn = "0306406152";
         String expectedLocatorCode = "6152J4";
+        testBook = new Book(isbn, "Of Mice And Men", "J. Steinbeck");
+
+        when(testDatabaseService.lookupISBN(anyString())).thenReturn(null);
+        when(testWebService.lookupISBN(anyString())).thenReturn(testBook);
 
         // execute
         String actualLocatorCode = stockManager.getLocatorCode(isbn);
@@ -66,9 +50,8 @@ public class StockManagementTest {
     void testIsUsedIfDataIsPresent() {
         // setup
         String isbn = "0306406152";
-        ExternalISBNDataService testDatabaseService = mock(ExternalISBNDataService.class);
-        when(testDatabaseService.lookupISBN(isbn)).thenReturn(new Book(isbn, "Of Mice And Men", "J. Steinbeck"));
-        stockManager.setDataService(testDatabaseService);
+        testBook = new Book(isbn, "Of Mice And Men", "J. Steinbeck");
+        when(testDatabaseService.lookupISBN(isbn)).thenReturn(testBook);
 
         // execute
         stockManager.getLocatorCode(isbn);
@@ -83,11 +66,9 @@ public class StockManagementTest {
     void testIsUsedIfDataIsNotPresentInDatabase() {
         // setup
         String isbn = "0306406152";
-        ExternalISBNDataService testDatabaseService = mock(ExternalISBNDataService.class);
-        ExternalISBNDataService testWebService = mock(ExternalISBNDataService.class);
+        testBook = new Book(isbn, "Of Mice And Men", "J. Steinbeck");
         when(testDatabaseService.lookupISBN(isbn)).thenReturn(null);
-        when(testWebService.lookupISBN(isbn)).thenReturn(new Book(isbn, "Of Mice And Men", "J. Steinbeck"));
-        stockManager.setDataService(testDatabaseService);
+        when(testWebService.lookupISBN(isbn)).thenReturn(testBook);
 
         // execute
         stockManager.getLocatorCode(isbn);

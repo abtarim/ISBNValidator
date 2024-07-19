@@ -1,10 +1,9 @@
 package com.softesteam.isbnvalidator;
 
-import org.hamcrest.core.StringContains;
 import org.junit.jupiter.api.*;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.junit.jupiter.api.function.Executable;
-import static org.hamcrest.MatcherAssert.assertThat;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
@@ -147,18 +146,4 @@ class ValidateISBNTest {
         // assert
         assertTrue(actual, "The result is should be true");
     }
-
-//    @Test
-//    @DisplayName("Check Email String")
-//    @Order(10)
-//    void checkEmailString() {
-//        // setup
-//        String email = "ab_tarim@gmail.com";
-//
-//        // execute
-//
-//
-//        // assert
-//        assertThat(email, StringContains.containsString("@"));
-//    }
 }
